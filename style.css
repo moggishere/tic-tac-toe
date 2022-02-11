@@ -62,20 +62,6 @@ body {
     cursor: default;
 }
 
-.O {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0;
-}
-
-.X {
-    position: relative;
-    bottom: 100%;
-    opacity: 0;
-    transform: translateY(10%);
-}
-
 .turned-on {
     opacity: 0.9;
 }

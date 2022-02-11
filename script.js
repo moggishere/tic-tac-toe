@@ -1,49 +1,52 @@
-const gameboard = (() => {
-    const board = []; // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    for (let i = 0; i < 9; i++) {
-        board.push('');
-    }
-
-    // board[2] = 'X';
-    // board[3] = 'O';
-})
+//the button that I'm clicking should do a few things
+//update the gameboard with either X or O IF the square is empty
+//NOT update if the square has something in it
+//switch the string from X to O or vice versa
 
 const Player = (name, score) => {
-    return {name, score};
+  return { name, score };
 }
 
-const switchPlayer = function (str) {
-    if (str == 'X') {
-        return 'O';
-    } else if (str =='O') {
-        return 'X';
-    }
+const gameBoard = (() => {
+
+  const board = Array(9).fill(''); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+  return {
+    board
+  };
+})();
+
+function drawGame() { //strictly for drawing signs on the board
+
+  for (let i = 0; i < 9; i++) {
+    document.getElementById(`sign-${i}`).innerHTML = '' //cleans the button beforehand
+    const square = document.getElementById(`sign-${i}`);
+    const newSign = document.createTextNode(`${gameBoard.board[i]}`);
+    square.appendChild(newSign);
+  }
+
 }
 
-// drawGame() constantly updates the board based on what's inside the gameboard obj
-// tile button should update gameboard object with 'X' or 'O'
-// drawGame() updates itself
+function playerOneTurn() {
 
-const drawGame = function() {
-    for (let i = 0; i < 9; i++) {
-        const signDraw = document.getElementById(`${i + 1}${sign}`)
-    }
+  const playerOneSquares = document.querySelectorAll('.square');
+  for (let i = 0; i < playerOneSquares.length; i++) {
+    playerOneSquares[i].addEventListener('click', e => {
+      gameBoard.board[i] = 'X'
+      drawGame();
+    })
+  }
+
 }
 
+function playerTwoTurn() {
 
+  const playerTwoSquares = document.querySelectorAll('.square');
+  for (let i = 0; i < playerTwoSquares.length; i++) {
+    playerTwoSquares[i].addEventListener('click', e => {
+      gameBoard.board[i] = 'O'
+      drawGame();
+    })
+  }
 
-const playGame = function () {
-    sign = 'O';
-
-    for (let i = 0; i < 9; i++) {
-        const tiles = document.getElementById(`${i + 1}`);
-        const signDraw = document.getElementById(`${i + 1}${sign}`)
-        tiles.addEventListener('click', e => {
-            console.log(e);
-            // signDraw.classList.add('turned-on');
-
-        })
-    }
 }
-
-// window.onload = playGame();
