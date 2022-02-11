@@ -65,3 +65,7 @@ body {
 .turned-on {
     opacity: 0.9;
 }
+
+.player-status {
+    text-align: center;
+}

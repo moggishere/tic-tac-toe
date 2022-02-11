@@ -10,7 +10,8 @@ const Player = (name, score) => {
 const gameBoard = (() => {
 
   const board = Array(9).fill(''); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  const gameOn = false;
+  const isPlaying = true;
+  let sign = 'X'
 
   const verifyBoardState = () => { //this is the dumbest way to do this, find a more elegant solution
     if (
@@ -37,10 +38,28 @@ const gameBoard = (() => {
 
     } else {
 
-      console.log('tied')
       return false;
 
     }
+  }
+
+  const statusUpdate = () => {
+    document.getElementById('status-p1').innerHTML = ''
+    document.getElementById('status-p2').innerHTML = ''
+    const activeStatus = document.createTextNode('ACTIVE');
+    const waitStatus = document.createTextNode('WAITING');
+    const p1Status = document.getElementById('status-p1');
+    const p2Status = document.getElementById('status-p2');
+
+    if (sign =='X') {
+      p1Status.appendChild(activeStatus);
+      p2Status.appendChild(waitStatus)
+    } else if (sign=='O') {
+      p2Status.appendChild(activeStatus)
+      p1Status.appendChild(waitStatus)
+    }
+
+    verifyBoardState();
   }
 
   function drawGame() { //strictly for drawing signs on the board
@@ -54,41 +73,48 @@ const gameBoard = (() => {
 
   }
 
-  const playerOneTurn = () => {
+  const playerTurn = () => {
 
-    const playerOneSquares = document.querySelectorAll('.square-off');
-    for (let i = 0; i < playerOneSquares.length; i++) {
-      playerOneSquares[i].addEventListener('click', e => {
-        gameBoard.board[i] = 'X'
+    const playerSquares = document.querySelectorAll('.square-off');
+    for (let i = 0; i < playerSquares.length; i++) {
+      playerSquares[i].addEventListener('click', e => {
+        gameBoard.board[i] = sign
         drawGame();
+        if (sign === 'X') {
+          sign = 'O'
+        } else if (sign ==='O') {
+          sign = 'X'
+        }
+        statusUpdate();
       })
     }
 
   }
 
-  const playerTwoTurn = () => {
+  // const playerTwoTurn = () => {
 
-    const playerTwoSquares = document.querySelectorAll('.square-off');
-    for (let i = 0; i < playerTwoSquares.length; i++) {
-      playerTwoSquares[i].addEventListener('click', e => {
-        gameBoard.board[i] = 'O'
-        drawGame();
-      })
-    }
+  //   const playerTwoSquares = document.querySelectorAll('.square-off');
+  //   for (let i = 0; i < playerTwoSquares.length; i++) {
+  //     playerTwoSquares[i].addEventListener('click', e => {
+  //       gameBoard.board[i] = 'O'
+  //       drawGame();
+  //     })
+  //   }
 
-  }
+  // }
 
 
   return {
     board,
-    verifyBoardState: verifyBoardState
+    sign,
+    verifyBoardState: verifyBoardState,
+    playerTurn: playerTurn
   };
 })();
 
 
-
-
-
 function playGame() {
-
+  gameBoard.playerTurn();
 }
+
+window.onload = playGame();
